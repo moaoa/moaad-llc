@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moaad LLC — Software Product Studio</title>
+  <meta name="description" content="Moaad LLC is a software product studio. We design, build, and maintain focused SaaS and web products." />
+  <meta name="author" content="Moaad LLC" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f2ee;
+      --ink: #1c1b19;
+      --ink-soft: #5c5852;
+      --ink-faint: #8a857c;
+      --line: rgba(28, 27, 25, 0.12);
+      --accent: #2f6b4f;
+      --accent-soft: #3d8a65;
+      --surface: rgba(255, 252, 247, 0.78);
+      --shadow: 0 24px 60px -28px rgba(28, 27, 25, 0.28);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --font: "Outfit", system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .shell { width: min(1120px, calc(100% - 2.5rem)); margin-inline: auto; }
+
+    .nav {
+      position: absolute;
+      inset-inline: 0;
+      top: 0;
+      z-index: 20;
+      padding: 1.35rem 0;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 0.55rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      font-size: 1.05rem;
+    }
+    .brand span {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem 1.5rem;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    .hero {
+      position: relative;
+      min-height: 100dvh;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 70% 55% at 88% 18%, rgba(47, 107, 79, 0.16), transparent 55%),
+        radial-gradient(ellipse 50% 40% at 12% 88%, rgba(28, 27, 25, 0.06), transparent 60%),
+        linear-gradient(160deg, #f7f4ef 0%, #efeae2 48%, #e7e1d7 100%);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      padding: 7.5rem 0 4rem;
+      align-items: end;
+    }
+    @media (min-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 3rem;
+        padding: 8.5rem 0 5rem;
+        min-height: 100dvh;
+        align-items: center;
+      }
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.3rem;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: rise 0.8s var(--ease) 0.1s forwards;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 1.4rem;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.6vw, 4rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 0.98;
+      max-width: 14ch;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: rise 0.9s var(--ease) 0.18s forwards;
+    }
+    .hero-copy {
+      font-size: 1.08rem;
+      color: var(--ink-soft);
+      max-width: 38ch;
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: rise 0.9s var(--ease) 0.28s forwards;
+    }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.85rem 1.25rem;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: rise 0.9s var(--ease) 0.38s forwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 0.9rem 1.35rem;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #f7f4ef;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+      transition: transform 0.25s var(--ease), background 0.25s var(--ease);
+    }
+    .btn:hover { background: #2a2825; }
+    .btn:active { transform: scale(0.98); }
+    .btn svg { width: 1rem; height: 1rem; transition: transform 0.3s var(--ease); }
+    .btn:hover svg { transform: translateX(2px); }
+    .btn-ghost {
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 0.1rem;
+      transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+    }
+    .btn-ghost:hover { color: var(--ink); border-color: var(--line); }
+
+    .hero-visual {
+      position: relative;
+      min-height: 320px;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      isolation: isolate;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(24px) scale(0.985);
+      animation: rise-scale 1s var(--ease) 0.35s forwards;
+    }
+    @media (min-width: 900px) {
+      .hero-visual { min-height: 520px; margin-top: 1rem; }
+    }
+    .hero-visual-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(145deg, rgba(28, 27, 25, 0.08), transparent 40%),
+        linear-gradient(25deg, #2f6b4f 0%, #1f4a38 42%, #24352d 100%);
+    }
+    .hero-visual-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(247, 244, 239, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(247, 244, 239, 0.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 75%);
+      animation: drift 18s linear infinite;
+    }
+    .orb {
+      position: absolute;
+      width: 42%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(247, 244, 239, 0.35), transparent 62%);
+      top: 12%;
+      right: 10%;
+      animation: float 7s ease-in-out infinite;
+      filter: blur(2px);
+    }
+    .hero-panel {
+      position: absolute;
+      left: 1.25rem;
+      right: 1.25rem;
+      bottom: 1.25rem;
+      padding: 1.15rem 1.25rem;
+      border-radius: 1rem;
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .hero-panel-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--accent);
+    }
+    .status i {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      display: block;
+      animation: pulse 2.4s var(--ease) infinite;
+    }
+    .hero-panel strong {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.65rem;
+    }
+    .fact-list {
+      display: grid;
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+    }
+    .fact-list div {
+      display: grid;
+      grid-template-columns: 5.5rem 1fr;
+      gap: 0.5rem;
+    }
+    .fact-list span:first-child {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      padding-top: 0.15rem;
+    }
+
+    .section {
+      padding: 5rem 0 4.5rem;
+      border-top: 1px solid var(--line);
+    }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.75rem;
+    }
+    .section h2 {
+      font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin-bottom: 0.85rem;
+    }
+    .section-intro {
+      color: var(--ink-soft);
+      font-size: 1.05rem;
+      max-width: 48ch;
+      margin-bottom: 2.5rem;
+    }
+
+    .services { background: #f7f4ef; }
+    .service-list { display: grid; border-top: 1px solid var(--line); }
+    .service-item {
+      display: grid;
+      gap: 0.75rem 2rem;
+      padding: 1.55rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+    @media (min-width: 768px) {
+      .service-item {
+        grid-template-columns: 7rem 1fr;
+        align-items: baseline;
+      }
+    }
+    .service-item .idx {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+    }
+    .service-item h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.35rem;
+    }
+    .service-item p {
+      color: var(--ink-soft);
+      max-width: 56ch;
+      font-size: 0.98rem;
+    }
+
+    .about { background: #f4f2ee; }
+    .about-grid {
+      display: grid;
+      gap: 2.5rem;
+    }
+    @media (min-width: 850px) {
+      .about-grid {
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 4rem;
+        align-items: start;
+      }
+    }
+    .about-copy p {
+      color: var(--ink-soft);
+      max-width: 48ch;
+      margin-bottom: 1rem;
+    }
+    .company-card {
+      padding: 1.5rem 0 0;
+      border-top: 1px solid var(--line);
+    }
+    .company-card dt {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.3rem;
+    }
+    .company-card dd {
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      margin-bottom: 1.1rem;
+    }
+
+    .contact {
+      background: linear-gradient(180deg, #efeae2 0%, #e8e2d8 100%);
+    }
+    .contact-inner {
+      display: grid;
+      gap: 2rem;
+    }
+    @media (min-width: 800px) {
+      .contact-inner {
+        grid-template-columns: 1.15fr 0.85fr;
+        align-items: end;
+        gap: 4rem;
+      }
+    }
+    .contact h2 {
+      margin: 0.85rem 0 1.15rem;
+      max-width: 14ch;
+    }
+    .contact > div > p,
+    .contact-copy p {
+      color: var(--ink-soft);
+      max-width: 38ch;
+      margin-bottom: 1.5rem;
+    }
+    .contact-details {
+      padding: 1.5rem 0 0;
+      border-top: 1px solid var(--line);
+    }
+    .contact-details dt {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.3rem;
+    }
+    .contact-details dd {
+      font-size: 1.02rem;
+      font-weight: 500;
+      margin-bottom: 1.1rem;
+    }
+    .contact-details a {
+      border-bottom: 1px solid var(--line);
+      transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+    }
+    .contact-details a:hover {
+      color: var(--accent);
+      border-color: rgba(47, 107, 79, 0.35);
+    }
+    .placeholder-note {
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--ink-faint);
+    }
+
+    .footer {
+      padding: 2rem 0 1.75rem;
+      border-top: 1px solid var(--line);
+      background: #e8e2d8;
+    }
+    .footer-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+    @media (min-width: 800px) {
+      .footer-grid {
+        grid-template-columns: 1.4fr 1fr auto;
+        align-items: start;
+        gap: 2rem;
+      }
+    }
+    .footer strong {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .footer p, .footer li {
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      line-height: 1.55;
+    }
+    .footer ul { list-style: none; }
+    .footer a:hover { color: var(--ink-soft); }
+    .footer-legal {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.25rem;
+    }
+    .footer-bottom {
+      margin-top: 1.5rem;
+      padding-top: 1.15rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.82rem;
+      color: var(--ink-faint);
+    }
+
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+    @keyframes rise-scale { to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+    @keyframes drift {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-48px, -48px, 0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="shell nav-inner">
+      <a class="brand" href="./">Moaad LLC <span>Studio</span></a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow">Software product studio</p>
+          <h1>Software built with restraint.</h1>
+          <p class="hero-copy">
+            Moaad LLC designs, builds, and maintains focused software products—SaaS apps, product interfaces, and the systems underneath.
+          </p>
+          <div class="cta-row">
+            <a class="btn" href="mailto:moaadbn3@gmail.com">
+              Email Moaad LLC
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a class="btn-ghost" href="#services">View services</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-visual-bg" aria-hidden="true"></div>
+          <div class="hero-visual-grid" aria-hidden="true"></div>
+          <div class="orb" aria-hidden="true"></div>
+          <div class="hero-panel">
+            <div class="hero-panel-top">
+              <span>Company</span>
+              <span class="status"><i></i> Operating</span>
+            </div>
+            <strong>Moaad LLC</strong>
+            <div class="fact-list">
+              <div><span>Type</span><span>Software product studio</span></div>
+              <div><span>Entity</span><span>Wyoming limited liability company</span></div>
+              <div><span>Contact</span><span>moaadbn3@gmail.com</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section services" id="services">
+      <div class="shell">
+        <p class="section-label">Services</p>
+        <h2>What Moaad LLC does</h2>
+        <p class="section-intro">
+          We help founders and small teams ship software with a clear scope: design the product, build it, and keep it running.
+        </p>
+
+        <div class="service-list">
+          <article class="service-item">
+            <span class="idx">01</span>
+            <div>
+              <h3>Software product design &amp; build</h3>
+              <p>
+                End-to-end delivery of SaaS and web products—user flows, interface design, frontend and backend implementation—scoped tightly so the first version is usable.
+              </p>
+            </div>
+          </article>
+          <article class="service-item">
+            <span class="idx">02</span>
+            <div>
+              <h3>Product interface design</h3>
+              <p>
+                Layout, typography, and interaction design for software products. Clear screens, readable hierarchy, and interfaces that stay calm under real use.
+              </p>
+            </div>
+          </article>
+          <article class="service-item">
+            <span class="idx">03</span>
+            <div>
+              <h3>Maintenance &amp; iteration</h3>
+              <p>
+                Ongoing ownership after launch: fixes, small features, performance work, and the operational upkeep that keeps a product trustworthy.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about" id="about">
+      <div class="shell about-grid">
+        <div class="about-copy">
+          <p class="section-label">About</p>
+          <h2>A registered software company</h2>
+          <p>
+            Moaad LLC is a single-member limited liability company organized in Wyoming. We operate as a software product studio: designing and building software for clients and for our own products.
+          </p>
+          <p>
+            Work is led by Moaad Ben Taher. Engagements stay intentionally small so delivery stays direct—from first sketch through production and follow-on maintenance.
+          </p>
+        </div>
+
+        <dl class="company-card">
+          <dt>Legal name</dt>
+          <dd>Moaad LLC</dd>
+          <dt>Business type</dt>
+          <dd>Software product studio</dd>
+          <dt>Organization</dt>
+          <dd>Wyoming LLC · Filed Apr 2, 2026</dd>
+          <dt>Principal address</dt>
+          <dd>30 N Gould St Ste N<br />Sheridan, WY 82801<br />United States</dd>
+          <dt>Principal</dt>
+          <dd>Moaad Ben Taher, Member</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="shell contact-inner">
+        <div class="contact-copy">
+          <p class="section-label">Contact</p>
+          <h2>Start a project conversation</h2>
+          <p>
+            Share what you’re building, the timeline, and where you need help. Brief notes are enough to start.
+          </p>
+          <a class="btn" href="mailto:moaadbn3@gmail.com">
+            Email Moaad LLC
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
+        <dl class="contact-details">
+          <dt>Email</dt>
+          <dd><a href="mailto:moaadbn3@gmail.com">moaadbn3@gmail.com</a></dd>
+          <dt>Phone</dt>
+          <dd>
+            +1 (XXX) XXX-XXXX
+            <span class="placeholder-note"> · placeholder — update before Meta verification</span>
+          </dd>
+          <dt>Mailing address</dt>
+          <dd>30 N Gould St Ste N, Sheridan, WY 82801, USA</dd>
+          <dt>Legal name</dt>
+          <dd>Moaad LLC</dd>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell">
+      <div class="footer-grid">
+        <div>
+          <strong>Moaad LLC</strong>
+          <p>
+            Software product studio.<br />
+            30 N Gould St Ste N, Sheridan, WY 82801, USA
+          </p>
+        </div>
+        <div>
+          <strong>Contact</strong>
+          <ul>
+            <li><a href="mailto:moaadbn3@gmail.com">moaadbn3@gmail.com</a></li>
+            <li>+1 (XXX) XXX-XXXX</li>
+          </ul>
+        </div>
+        <div class="footer-legal">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Use</a>
+        </div>
+      </div>
+      <p class="footer-bottom">© 2026 Moaad LLC. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
